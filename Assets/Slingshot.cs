@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class Slingshot : MonoBehaviour
 {
+    static private Slingshot S; // We're trying singletons today
+
     // fields set in the Unity Inspector pane
     [Header("Inscribed")]
-    public GameObject       projectilePrefab;
+    //public GameObject       projectilePrefab;
     public float            velocityMult = 10f;
+    public GameObject[]     projectilePrefabs;
     public GameObject       projLinePrefab;
     
     // fields set dynamically
     [Header("Dynamic")]
+    public int              projectileNumber = 0;
+    public int              projectileMax;
     public GameObject       launchPoint;
     public Vector3          launchPos;
     public GameObject       projectile;
+    //public GameObject       rubberBand;
     public bool             aimingMode;
 
     void Awake() {
@@ -22,6 +28,8 @@ public class Slingshot : MonoBehaviour
         launchPoint = launchPointTrans.gameObject;
         launchPoint.SetActive( false );
         launchPos = launchPointTrans.position;
+        projectileMax = projectilePrefabs.Length;
+        S = this;
     }
     void OnMouseEnter() {
         //print( "Slingshot:OnMouseEnter()" );
@@ -38,11 +46,15 @@ public class Slingshot : MonoBehaviour
         // The player has pressed the mouse button while over Slingshot
         aimingMode = true;
         // Instantiate a Projectile
-        projectile = Instantiate( projectilePrefab ) as GameObject;
+        projectile = Instantiate( projectilePrefabs[projectileNumber] ) as GameObject;
         // Start it at the launchPoint
         projectile.transform.position = launchPos;
         // Set it to is Kinematic for now
         projectile.GetComponent<Rigidbody>().isKinematic = true;
+        RubberBand.RubberBandPulled(projectile);
+        //rubberBand = GameObject.GetComponentInChildren<RubberBand>();
+        //rubberBand = GameObject.Find("RubberBand");
+        //rubberBand.RubberBand.RubberBandPulled(projectile);
     }
 
     void Update() {
@@ -82,6 +94,20 @@ public class Slingshot : MonoBehaviour
             Instantiate<GameObject>(projLinePrefab, projectile.transform);
             projectile = null;
             MissionDemolition.SHOT_FIRED();
+            RubberBand.RubberBandReleased();
         }
+    }
+
+    public void switch_projectile() {
+        projectileNumber++;
+        if (projectileNumber == projectileMax) {
+            projectileNumber = 0;
+        }
+        //print("Switching Projectile");
+    }
+
+    static public void SWITCH_PROJECTILE() {
+        // This wasn't necessary, but I'm learning!
+        S.switch_projectile();
     }
 }
