@@ -1,1 +1,14 @@
 # CS382MissionDemolition
+Alright, so I have completed the project. I have a couple issues that I ran into. I'll be frank, my code is a bit of a mess, so I'm sorry about that. I didn't understand how to use singletons for some time, but I think I have the hang of them now. With that said, I have three main points I'd like to address.
+
+-The Rubber Band
+-The Audio
+-The Meaningful Change
+
+So, I feel like the change I made is a little lackluster. But it has potential. I changes the slingshot so that instead of accepting a single projectile prefab, it accepted an array of them. I then added a button to the UI that let the player cycle between these different types of projectiles. I only added one other projectile which is supposed to be a big rock. All of its dimmensions are doubled. The mass is quadrupled. It feels very strong with no downsides though. I tried giving it drag so that it would fly differently, but that was unsatisfying. I thought about rewriting the slingshot so that the velocity multiplier came from the projectiles themselves, but that ended up being beyond the scope of what I had time for.
+
+The audio was a serious problem for me. I don't know where to find audio. I have tried and struggled a great deal at this. I have instead implemented a half measure. The rubberband is supposed to play a "boing" sound when released. I have an audio source set up to do so. However, seing as there is no clip attached to the audio source, it is silent. Instead, I have that function set to print "Boing" as a debug message everytime the rubber band is released and the audioSource.play() function would normally be called. 
+
+The rubber band was great. I had started to worry that I wasn't enjoying this class, but when I got to the rubber band I felt much better. I could have spent less time on it, and given myself more time to fix issues in other areas of the project, but I simply wanted to work on the rubber band. My first thought was to just draw a line from the closest prong of the slingshot to the projectile when its instantiated, and delete it when the user lets go. Instead, I drew the line as an array of three points, ending and starting at each slingshot prong. The middle point eases towards the middle point of the slingshot on FixedUpdate() when not being held in place. When the ball is instantiated, it tracks its position without easing until the mouse is released. I like to think that the quality of this rubber band makes up for some of my failings in other regards.
+
+Please bear in mind, I was terribly ill last week, and I've had to work hard to play catch up in all my classes this week. i feel as though I've done the best I can with the time provided.
